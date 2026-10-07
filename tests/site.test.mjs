@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
+import { createInquiryMailto } from "../contact.mjs";
 
 const root = new URL("../", import.meta.url);
 const read = (name) => readFileSync(new URL(name, root), "utf8");
@@ -70,7 +71,63 @@ test("design is narrow-screen and accessible without JavaScript", () => {
 });
 
 test("required publishing files are present", () => {
-  for (const file of ["index.html","site.css","forma.lock","favicon.svg","robots.txt","sitemap.xml",".nojekyll"]) {
+  for (const file of ["index.html","site.css","contact.mjs","forma.lock","favicon.svg","robots.txt","sitemap.xml",".nojekyll"]) {
     assert.ok(existsSync(join(root.pathname, file)), "missing: " + file);
   }
+});
+
+test("Contact us keeps the original studio's invitation and offers a complete accessible inquiry", () => {
+  assert.match(html, /Contact us/);
+  assert.match(html, /Interested in working together/);
+  assert.match(html, /<form[^>]+id="project-inquiry"[^>]+data-testid="inquiry-form"/);
+  const names = ["name", "email", "phone", "projectType", "location", "message"];
+  for (const name of names) {
+    assert.match(html, new RegExp('name="' + name + '"'), "missing field " + name);
+  }
+  for (const id of ["inquiry-name", "inquiry-email", "inquiry-phone", "inquiry-type", "inquiry-location", "inquiry-message"]) {
+    assert.match(html, new RegExp('for="' + id + '"'), "missing accessible label " + id);
+    assert.match(html, new RegExp('id="' + id + '"'), "missing form control " + id);
+  }
+  for (const id of ["inquiry-name","inquiry-email","inquiry-message"]) {
+    const tag = html.match(new RegExp('<(?:input|textarea)[^>]+id="' + id + '"[^>]*>', "s"))?.[0];
+    assert.ok(tag?.includes("required"), "required field must validate: " + id);
+  }
+  assert.match(html, /type="email"/);
+  assert.match(html, /type="submit"/);
+  assert.match(html, /role="status" aria-live="polite"/);
+  assert.match(html, /Your email app will open, and you.ll need to press Send/);
+  assert.match(html, /Nothing is stored on this website/);
+  assert.doesNotMatch(html, /action="(?:#|https?:\/\/[^"]*)"/);
+});
+
+test("inquiry adapter encodes all user data in a draft without claiming submission", () => {
+  const uri = createInquiryMailto({
+    name: "Alex Builder",
+    email: "alex@example.com",
+    phone: "555-555-5555",
+    projectType: "Construction administration",
+    location: "Indianapolis, IN",
+    message: "We need an architectural partner & a clear plan."
+  });
+  assert.ok(uri.startsWith("mailto:jacquelyn.brice@echoworks.studio?subject="));
+  assert.equal(new URLSearchParams(uri.split("?")[1]).get("subject"), "EchoWorks inquiry: Construction administration");
+  const body = new URLSearchParams(uri.split("?")[1]).get("body");
+  for (const fragment of ["Alex Builder","alex@example.com","555-555-5555","Construction administration","Indianapolis, IN","architectural partner & a clear plan"]) {
+    assert.ok(body.includes(fragment), "message must contain: " + fragment);
+  }
+  assert.doesNotMatch(uri, /[\r\n]/);
+  const hostile = createInquiryMailto({projectType:"Architectural rendering\r\nBcc:mail@example.org", name:"Someone",email:"safe@example.org",message:"Hello"});
+  assert.ok(!new URLSearchParams(hostile.split("?")[1]).get("subject").includes("\n"), "subject cannot gain extra headers");
+});
+
+test("new visual identity is distinct, readable, and responsive", () => {
+  assert.match(css, /--ew-paper: #f6f1e8/);
+  assert.match(css, /--ew-dark: #51343a/);
+  assert.match(css, /--ew-display: "Fraunces"/);
+  assert.match(css, /--ew-sans: "Source Sans 3"/);
+  assert.match(html, /family=Fraunces/);
+  assert.match(html, /family=Source\+Sans\+3/);
+  assert.doesNotMatch(css, /#1f3530|#243e35|#172c25|Italiana|DM Sans/i);
+  assert.match(css, /font: 500 clamp\(1\.15rem,1\.36vw,1\.32rem\)\/1\.65/);
+  assert.match(css, /\.ew-form-grid \{ grid-template-columns: 1fr;/);
 });
