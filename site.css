@@ -284,7 +284,7 @@ body.ef-site.ew-site {
   .ew-footer-rule { margin-top: 36px; }
 }
 @media (max-width: 370px) {
-  .ew-site h1.ew-display { font-size: 3.52rem; }
+  .ew-site h1.ew-display { font-size: clamp(2.9rem, 13vw, 3.52rem); }
   .ew-site .ew-hero-actions { align-items: flex-start; flex-direction: column; }
   .ew-hero-copy { min-height: 610px; }
 }
