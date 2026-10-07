@@ -98,7 +98,7 @@ body.ef-site.ew-site {
 .ew-hero-copy { position: relative; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; min-width: 0; padding: clamp(50px,7vw,124px) clamp(26px,5.2vw,100px) 80px clamp(26px,7vw,130px); }
 .ew-hero-copy .ew-overline { color: var(--ew-clay); margin-bottom: clamp(27px,4vw,60px); }
 .ew-site h1.ew-display {
-  max-width: none; margin: 0 0 31px; font: 500 clamp(4.4rem,8.1vw,9rem)/1.04 var(--ew-display);
+  max-width: none; margin: 0 0 31px; font: 500 clamp(3.6rem,6vw,7rem)/1.04 var(--ew-display);
   letter-spacing: -.055em; white-space: nowrap;
 }
 .ew-display em { font-size: .93em; }
@@ -119,7 +119,7 @@ body.ef-site.ew-site {
 .ew-hero-visual { position: relative; overflow: hidden; min-height: 650px; margin: 0; background: #bdb0a2; }
 .ew-hero-visual img { object-position: center; filter: saturate(.55) contrast(.94); }
 .ew-hero-visual::after { position: absolute; inset: 0; content:""; background: linear-gradient(to bottom,transparent 60%,#261c2263); pointer-events: none; }
-.ew-hero-visual figcaption,.ew-belief-image figcaption { position: absolute; left: 30px; bottom: 22px; color: white; z-index: 2; font: 600 .6rem/1.5 var(--ew-sans); letter-spacing: .15em; }
+.ew-hero-visual figcaption,.ew-belief-image figcaption { position: absolute; left: 30px; bottom: 22px; color: white; z-index: 2; font: 600 .78rem/1.5 var(--ew-sans); letter-spacing: .07em; }
 .ew-hero-visual figcaption span { padding: 0 8px; }
 .ew-hero-mark { position: absolute; top: 28px; right: 30px; color: white; font: 400 1.15rem/1 var(--ew-display); z-index: 2; }
 
@@ -184,7 +184,7 @@ body.ef-site.ew-site {
 .ew-principal { display: grid; grid-template-columns: 47% 53%; background: #eee3db; min-height: 700px; }
 .ew-principal-photo { position: relative; min-height: 700px; overflow: hidden; background: #bca8a2; }
 .ew-principal-photo img { object-position: center 31%; }
-.ew-photo-label { position: absolute; left: 27px; bottom: 26px; color: white; background: #51343abb; font: 700 .6rem/1.4 var(--ew-sans); letter-spacing: .13em; padding: 10px 13px; }
+.ew-photo-label { position: absolute; left: 27px; bottom: 26px; color: white; background: #51343abb; font: 700 .76rem/1.4 var(--ew-sans); letter-spacing: .08em; padding: 10px 13px; }
 .ew-principal-copy { padding: clamp(65px,7vw,126px) clamp(28px,7.5vw,140px); display: flex; flex-direction: column; align-items: flex-start; justify-content: center; }
 .ew-principal h2 { margin: 20px 0 26px; }
 .ew-principal-intro { font-weight: 700; color: var(--ew-ink)!important; font-size: 1rem; }
@@ -281,7 +281,7 @@ body.ef-site.ew-site {
   .ew-mobile-menu { display: block; }
   .ew-site .ew-hero { grid-template-columns: 1fr; }
   .ew-hero-copy { min-height: 570px; padding: 75px clamp(24px,7vw,55px) 70px; }
-  .ew-site h1.ew-display { font-size: clamp(5rem,13vw,8rem); }
+  .ew-site h1.ew-display { font-size: clamp(4.2rem,12vw,7rem); }
   .ew-hero-bottom { left: clamp(24px,7vw,55px); right: clamp(24px,7vw,55px); }
   .ew-hero-visual { height: 540px; min-height: 0; }
   .ew-intro,.ew-sectors-inner { grid-template-columns: 1fr; gap: 28px; }
@@ -306,7 +306,7 @@ body.ef-site.ew-site {
   .ew-brand-name { font-size: 1.38rem; }
   .ew-hero-copy { min-height: 550px; padding: 60px 24px 75px; }
   .ew-hero-copy .ew-overline { margin-bottom: 33px; }
-  .ew-site h1.ew-display { font-size: clamp(3.85rem,15.1vw,6.3rem); margin-bottom: 25px; }
+  .ew-site h1.ew-display { font-size: clamp(3.25rem,13.6vw,5.25rem); margin-bottom: 25px; }
   .ew-site .ew-hero-lead { font-size: 1.08rem; }
   .ew-site .ew-hero-actions { gap: 17px; margin-top: 30px; }
   .ew-site .ef-button.ew-button { padding: 14px 18px; }
@@ -343,7 +343,7 @@ body.ef-site.ew-site {
   .ew-footer-rule { margin-top: 36px; }
 }
 @media (max-width: 370px) {
-  .ew-site h1.ew-display { font-size: clamp(2.9rem, 13vw, 3.52rem); }
+  .ew-site h1.ew-display { font-size: clamp(2.55rem, 12vw, 3.1rem); }
   .ew-site .ew-hero-actions { align-items: flex-start; flex-direction: column; }
   .ew-hero-copy { min-height: 610px; }
 }
