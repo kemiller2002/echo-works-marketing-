@@ -65,8 +65,8 @@ test("design is narrow-screen and accessible with only minimal client-side code"
   assert.match(css, /prefers-reduced-motion: reduce/);
   assert.match(css, /forced-colors: active/);
   assert.match(css, /:focus-visible/);
-  assert.match(html, /<script type="module" src="contact[.]mjs"><\\/script>/);
-  assert.equal((html.match(/<script\\b/g) ?? []).length, 1, "only the minimal inquiry module may run");
+  assert.ok(html.includes('<script type="module" src="contact.mjs"></script>'), "contact module must load");
+  assert.equal(html.split("<script").length - 1, 1, "only the minimal inquiry module may run");
   assert.match(html, /loading="lazy"/);
   assert.match(html, /fetchpriority="high"/);
 });
