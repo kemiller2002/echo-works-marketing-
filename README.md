@@ -4,7 +4,7 @@ A new editorial website for EchoWorks LLC, an Indianapolis-based architecture pr
 
 ## Design direction
 
-This is intentionally **not** the Echelon Foundry marketing design. It uses Forma’s version-pinned, **brand-neutral** presentation layer for semantic patterns and accessible components, then an EchoWorks-owned visual identity (warm limestone, dark pine, burnt clay, monumental serif typography, architectural photography). No Echelon theme is loaded.
+This is intentionally **not** the Echelon Foundry marketing design. It uses Forma’s version-pinned, **brand-neutral** presentation layer for semantic patterns and accessible components, then an EchoWorks-owned visual identity (warm limestone, dark plum, terracotta and charcoal, more legible Source Sans 3 copy paired with Fraunces editorial titles, architectural photography). No Echelon theme is loaded.
 
 ## Preview locally
 
@@ -16,7 +16,7 @@ python3 -m http.server 8000
 # open http://localhost:8000/
 ```
 
-The production GitHub Pages workflow uses the corresponding pinned Forma action. The site is static HTML/CSS; no client-side application runtime or npm dependency is required. Links are relative so it works at both a project Pages URL and a custom domain.
+The production GitHub Pages workflow uses the corresponding pinned Forma action. The site is static HTML/CSS; no client-side application framework or npm dependency is required; the inquiry uses a tiny ES module. Links are relative so it works at both a project Pages URL and a custom domain.
 
 ## Check
 
@@ -34,6 +34,19 @@ Pushes to `main` run structural tests, install the pinned Forma stylesheet, asse
 - The principal's portrait is referenced from EchoWorks' own Squarespace CDN. Permission and image stability should be confirmed for production.
 - Other building/interior photographs are Unsplash **editorial illustrative images**, not representations of completed EchoWorks projects. They are labeled as such; replace them with authorized real project photography as it becomes available.
 - Contact links use the published business email and telephone. We do **not** collect form submissions without an approved backend/privacy policy.
+
+## Contact form and delivery contract
+
+The previous EchoWorks Squarespace homepage and About page both contain a real **Contact us** form. The new homepage incorporates a designed project-inquiry form collecting name, email, optional phone, interest, optional location, and message.
+
+GitHub Pages cannot receive submissions itself. Until EchoWorks approves and provisions a real form delivery service, the `contact.mjs` adapter prepares a `mailto:` draft from validated form inputs; the visitor still has to press Send in their email application. This is disclosed directly on the form. **Do not describe this as server-submitted** or remove the disclosure. The adapter is a tiny isolated transport boundary that can later be replaced by a verified backend without changing the form UI.
+
+### Before claiming production form delivery
+
+- Choose a trusted inbound endpoint (Squarespace form backend only with supported integration, or an approved serverless endpoint/form service).
+- Confirm who receives inquiries, who can access them, privacy/retention, spam controls, and vendor requirements.
+- Test success, delivery failure, bot abuse, and the thank-you state using a real external mailbox.
+- Only after verification, replace the `mailto:` transport and change the UI copy to say the form submits.
 
 ## Accessibility and behavior
 
