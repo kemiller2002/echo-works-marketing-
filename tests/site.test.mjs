@@ -59,13 +59,14 @@ test("editorial photographs are not presented as completed projects", () => {
   assert.doesNotMatch(html, /our completed projects|\d+ successful projects/i);
 });
 
-test("design is narrow-screen and accessible without JavaScript", () => {
+test("design is narrow-screen and accessible with only minimal client-side code", () => {
   assert.match(css, /max-width: 620px/);
   assert.match(css, /max-width: 370px/);
   assert.match(css, /prefers-reduced-motion: reduce/);
   assert.match(css, /forced-colors: active/);
   assert.match(css, /:focus-visible/);
-  assert.doesNotMatch(html, /<script\b/);
+  assert.match(html, /<script type="module" src="contact[.]mjs"><\\/script>/);
+  assert.equal((html.match(/<script\\b/g) ?? []).length, 1, "only the minimal inquiry module may run");
   assert.match(html, /loading="lazy"/);
   assert.match(html, /fetchpriority="high"/);
 });
