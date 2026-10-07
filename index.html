@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f7f5f0">
+  <meta name="theme-color" content="#f6f1e8">
   <meta name="description" content="EchoWorks is an Indianapolis architecture practice offering architecture, interior design, rendering, construction administration, and sustainable design consulting in Indiana and Ohio.">
   <meta property="og:type" content="website">
   <meta property="og:title" content="EchoWorks | Thoughtful spaces. Thoughtful process.">
@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://images.unsplash.com">
   <link rel="preconnect" href="https://images.squarespace-cdn.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Italiana&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600&amp;family=Source+Sans+3:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
   <!-- Pinned, brand-neutral Forma presentation. Never load the Echelon marketing theme. -->
   <link rel="stylesheet" href="assets/forma/forma-marketing.css">
   <link rel="stylesheet" href="site.css">
@@ -163,14 +163,62 @@
 
     <section class="ef-section ew-contact" id="contact" aria-labelledby="contact-title" data-testid="contact">
       <div class="ew-contact-inner">
-        <p class="ef-eyebrow ew-overline">LET'S MAKE SOMETHING MEANINGFUL</p>
-        <h2 id="contact-title">Have a space in mind?<br><em>Let's talk.</em></h2>
-        <p>New project, fresh perspective, or a team in need of architectural support? We'd love to hear what you're working on.</p>
-        <div class="ef-actions ew-contact-actions">
-          <a class="ef-button ew-button ew-button-light" data-ef-variant="primary" href="mailto:jacquelyn.brice@echoworks.studio?subject=New%20project%20inquiry">Start a conversation <span aria-hidden="true">↗</span></a>
-          <a class="ew-contact-phone" href="tel:+18125842085">812 584 2085</a>
+        <div class="ew-contact-intro">
+          <p class="ef-eyebrow ew-overline">05 / CONTACT US</p>
+          <h2 id="contact-title">Let's start with <em>a conversation.</em></h2>
+          <p>Interested in working together? Tell us a little about your project or partnership. We'd love to hear what you have in mind.</p>
+          <div class="ew-contact-details">
+            <div><span>Email</span><a href="mailto:jacquelyn.brice@echoworks.studio">jacquelyn.brice@echoworks.studio</a></div>
+            <div><span>Phone</span><a href="tel:+18125842085">812 584 2085</a></div>
+            <div><span>Based in</span><strong>Indianapolis, Indiana</strong></div>
+          </div>
         </div>
-        <span class="ew-contact-star" aria-hidden="true">✳</span>
+        <form class="ew-inquiry-form" id="project-inquiry" data-testid="inquiry-form" aria-labelledby="inquiry-title">
+          <h3 id="inquiry-title">Tell us about your project</h3>
+          <p class="ew-inquiry-subtitle">A few details are all we need to get started.</p>
+          <div class="ew-form-grid">
+            <div class="ew-form-field">
+              <label for="inquiry-name">Your name <span aria-hidden="true">*</span></label>
+              <input id="inquiry-name" name="name" type="text" autocomplete="name" maxlength="100" required placeholder="Your full name">
+            </div>
+            <div class="ew-form-field">
+              <label for="inquiry-email">Email address <span aria-hidden="true">*</span></label>
+              <input id="inquiry-email" name="email" type="email" autocomplete="email" maxlength="254" required placeholder="you@example.com">
+            </div>
+            <div class="ew-form-field">
+              <label for="inquiry-phone">Phone number <span class="ew-optional">(optional)</span></label>
+              <input id="inquiry-phone" name="phone" type="tel" autocomplete="tel" maxlength="40" placeholder="(555) 123-4567">
+            </div>
+            <div class="ew-form-field">
+              <label for="inquiry-type">What are you interested in?</label>
+              <select id="inquiry-type" name="projectType">
+                <option value="">Select an option</option>
+                <option value="Architecture">Architecture</option>
+                <option value="Interior design">Interior design</option>
+                <option value="Architectural rendering">Architectural rendering</option>
+                <option value="Construction administration">Construction administration</option>
+                <option value="Sustainability / LEED consulting">Sustainability / LEED consulting</option>
+                <option value="Project partnership">Project partnership</option>
+                <option value="Other inquiry">Other inquiry</option>
+              </select>
+            </div>
+          </div>
+          <div class="ew-form-field">
+            <label for="inquiry-location">Project location <span class="ew-optional">(optional)</span></label>
+            <input id="inquiry-location" name="location" type="text" maxlength="150" placeholder="City, state, or project area">
+          </div>
+          <div class="ew-form-field">
+            <label for="inquiry-message">Tell us a little more <span aria-hidden="true">*</span></label>
+            <textarea id="inquiry-message" name="message" rows="5" maxlength="1200" required placeholder="What are you hoping to create, improve, or explore?"></textarea>
+          </div>
+          <div class="ew-form-actions">
+            <button class="ew-form-submit" type="submit">Continue in your email app <span aria-hidden="true">↗</span></button>
+            <p class="ew-form-help">This form prepares an email to EchoWorks. Your email app will open, and you'll need to press Send. Nothing is stored on this website.</p>
+          </div>
+          <p id="inquiry-status" class="ew-form-status" role="status" aria-live="polite"></p>
+          <a class="ew-inquiry-fallback" id="inquiry-draft-link" href="mailto:jacquelyn.brice@echoworks.studio" hidden>Open your prepared email again ↗</a>
+          <noscript><p class="ew-noscript">To contact EchoWorks, email <a href="mailto:jacquelyn.brice@echoworks.studio">jacquelyn.brice@echoworks.studio</a>. Completing the fields above requires JavaScript to prepare a draft.</p></noscript>
+        </form>
       </div>
     </section>
   </main>
@@ -187,5 +235,6 @@
       <p class="ew-photo-disclosure">Architectural images are illustrative stock photography, not EchoWorks project photographs. Principal portrait © its respective rights holder.</p>
     </div>
   </footer>
+  <script type="module" src="contact.mjs"></script>
 </body>
 </html>
