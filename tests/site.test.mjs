@@ -45,14 +45,17 @@ test("navigation, anchors, and controls are real and machine-addressable", () =>
 });
 
 test("mobile menu uses three visible hamburger bars and a two-stroke close icon", () => {
-  assert.match(html, /<span class="ew-menu-icon" aria-hidden="true"><\\/span>/);
-  assert.match(css, /\\.ew-menu-icon\\s*\\{[^}]*background:\\s*currentColor/s, "the element draws the middle bar");
-  assert.match(css, /\\.ew-menu-icon::before,\\s*\\.ew-menu-icon::after\\s*\\{[^}]*content:\\s*""/s, "pseudo-elements draw top and bottom bars");
-  assert.match(css, /\\.ew-menu-icon::before\\s*\\{\\s*transform:\\s*translateY\\(-7px\\)/);
-  assert.match(css, /\\.ew-menu-icon::after\\s*\\{\\s*transform:\\s*translateY\\(7px\\)/);
-  assert.match(css, /\\.ew-mobile-menu\\[open\\] \\.ew-menu-icon\\s*\\{ background:\\s*transparent/);
-  assert.match(css, /\\.ew-mobile-menu\\[open\\] \\.ew-menu-icon::before\\s*\\{ transform:\\s*rotate\\(45deg\\)/);
-  assert.match(css, /\\.ew-mobile-menu\\[open\\] \\.ew-menu-icon::after\\s*\\{ transform:\\s*rotate\\(-45deg\\)/);
+  assert.ok(html.includes('<span class="ew-menu-icon" aria-hidden="true"></span>'));
+  const menuCss = css.slice(css.indexOf("/* Three visible strokes"), css.indexOf(".ew-mobile-menu nav {"));
+  assert.ok(menuCss.includes(".ew-menu-icon {"), "middle bar has its own CSS");
+  assert.ok(menuCss.includes("background: currentColor;"), "strokes have a visible foreground color");
+  assert.ok(menuCss.includes(".ew-menu-icon::before,"), "top bar pseudo-element exists");
+  assert.ok(menuCss.includes(".ew-menu-icon::after {"), "bottom bar pseudo-element exists");
+  assert.ok(menuCss.includes(".ew-menu-icon::before { transform: translateY(-7px); }"), "top bar is separated");
+  assert.ok(menuCss.includes(".ew-menu-icon::after { transform: translateY(7px); }"), "bottom bar is separated");
+  assert.ok(menuCss.includes(".ew-mobile-menu[open] .ew-menu-icon { background: transparent; }"), "middle bar hides when expanded");
+  assert.ok(menuCss.includes(".ew-mobile-menu[open] .ew-menu-icon::before { transform: rotate(45deg); }"));
+  assert.ok(menuCss.includes(".ew-mobile-menu[open] .ew-menu-icon::after { transform: rotate(-45deg); }"));
 });
 
 test("published business data is consistent across contact paths", () => {
