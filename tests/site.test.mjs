@@ -37,7 +37,7 @@ test("navigation, anchors, and controls are real and machine-addressable", () =>
   for (const match of html.matchAll(/\bhref="#([^"]+)"/g)) {
     assert.ok(idSet.has(match[1]), "anchor target missing: " + match[1]);
   }
-  assert.doesNotMatch(html, /href=["'](?:#|javascript:|mailto:hello@example)/i);
+  assert.doesNotMatch(html, /href=["'](?:#["']|javascript:|mailto:hello@example)/i);
   for (const id of ["header", "hero", "services", "approach", "studio", "contact"]) {
     assert.match(html, new RegExp('data-testid="' + id + '"'));
   }
