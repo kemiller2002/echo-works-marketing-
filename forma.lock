@@ -1,0 +1,6 @@
+# EchoWorks consumes the brand-neutral Forma layer, not Echelon's theme.
+# Pin to Forma v0.4.1 release asset checksum from GitHub's published asset metadata.
+forma 0.4.1
+repository kemiller2002/forma
+destination assets/forma
+asset forma-marketing.css sha256:28874da37c70ac0f820a73d7a39e2e44a9fcc04df3ed213e424a9f3271a65c03
