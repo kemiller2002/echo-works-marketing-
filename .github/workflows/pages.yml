@@ -48,9 +48,38 @@ jobs:
         with:
           path: dist
 
+  ui-conformance:
+    # visual-engineering/UI-LAYOUT-INTERACTION@1.0.0 browser evidence for the built site.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install checksum-pinned, brand-neutral Forma
+        uses: kemiller2002/forma/actions/install-presentation@v0.4.1
+        with:
+          lock: forma.lock
+      - name: Install test tooling
+        run: npm ci
+      - name: Install Chromium for Playwright
+        run: npx playwright install --with-deps chromium
+      - name: Build and run UI conformance suite
+        run: npm run ui:conformance
+      - name: Upload Playwright report and traces
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-conformance-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14
+
   deploy:
     if: github.event_name != 'pull_request' && needs.build.outputs.pages-ready == 'true'
-    needs: build
+    needs: [build, ui-conformance]
     runs-on: ubuntu-latest
     permissions:
       pages: write

@@ -16,13 +16,24 @@ python3 -m http.server 8000
 # open http://localhost:8000/
 ```
 
-The production GitHub Pages workflow uses the corresponding pinned Forma action. The site is static HTML/CSS; no client-side application framework or npm dependency is required; the inquiry uses a tiny ES module. Links are relative so it works at both a project Pages URL and a custom domain.
+The production GitHub Pages workflow uses the corresponding pinned Forma action. The site is static HTML/CSS; no client-side application framework or npm dependency is required; the inquiry uses a tiny ES module (`contact.mjs`) and `navigation.mjs` closes the native mobile menu after a destination is chosen or Escape is pressed. `build.sh` fails if a module referenced by `index.html` is not shipped in `dist/`. Links are relative so it works at both a project Pages URL and a custom domain.
 
 ## Check
 
 ```bash
 node --test tests/site.test.mjs
 ```
+
+### UI layout and interaction conformance
+
+The site conforms to `visual-engineering/UI-LAYOUT-INTERACTION@1.0.0` (rule IDs `ULI-L01`..`ULI-L13`, `ULI-A01`..`ULI-A10`). With the pinned Forma CSS installed:
+
+```bash
+npm ci
+npm run ui:conformance   # builds dist/, serves it, runs tests/ui-conformance/*.spec.mjs in Chromium
+```
+
+The suite checks every navigation item and CTA reaches its destination (not just that it can be clicked), declared alignment groups after fonts load, no horizontal overflow or escaping text at 320/390/768/1280 px plus the 851 px and 1000 px content breakpoints and 200% text, keyboard reachability, the honest email-draft inquiry flow and reduced motion. `tests/ui-conformance/ui-conformance-helpers.mjs` mirrors Forma's shared helpers and is meant to be replaced by them once published. Set `PLAYWRIGHT_CHROMIUM_EXECUTABLE` to use a preinstalled Chromium.
 
 ## Publishing
 
