@@ -80,13 +80,15 @@ test("design is narrow-screen and accessible with only minimal client-side code"
   assert.match(css, /forced-colors: active/);
   assert.match(css, /:focus-visible/);
   assert.ok(html.includes('<script type="module" src="contact.mjs"></script>'), "contact module must load");
-  assert.equal(html.split("<script").length - 1, 1, "only the minimal inquiry module may run");
+  const scripts = [...html.matchAll(/<script\b[^>]*>/g)].map(match => match[0]);
+  assert.deepEqual(scripts, ['<script type="module" src="contact.mjs">', '<script type="module" src="navigation.mjs">'],
+    "only the minimal inquiry and menu-state modules may run");
   assert.match(html, /loading="lazy"/);
   assert.match(html, /fetchpriority="high"/);
 });
 
 test("required publishing files are present", () => {
-  for (const file of ["index.html","site.css","contact.mjs","forma.lock","favicon.svg","robots.txt","sitemap.xml",".nojekyll"]) {
+  for (const file of ["index.html","site.css","contact.mjs","navigation.mjs","forma.lock","favicon.svg","robots.txt","sitemap.xml",".nojekyll"]) {
     assert.ok(existsSync(join(root.pathname, file)), "missing: " + file);
   }
 });
@@ -145,4 +147,22 @@ test("new visual identity is distinct, readable, and responsive", () => {
   assert.doesNotMatch(css, /#1f3530|#243e35|#172c25|Italiana|DM Sans/i);
   assert.match(css, /font: 500 clamp\(1\.15rem,1\.36vw,1\.32rem\)\/1\.65/);
   assert.match(css, /\.ew-form-grid \{ grid-template-columns: 1fr;/);
+});
+
+test("every module the page loads is shipped by the build (contact.mjs previously 404ed in dist)", () => {
+  const build = read("build.sh");
+  const copyLine = build.split("\n").find(line => line.startsWith("cp index.html")) ?? "";
+  for (const [, src] of html.matchAll(/<script type="module" src="([^"]+)"/g)) {
+    assert.ok(copyLine.split(/\s+/).includes(src), "build.sh must copy " + src + " into dist/");
+  }
+});
+
+test("mobile menu closes after choosing a destination or pressing Escape", async () => {
+  const { shouldCloseMenu } = await import("../navigation.mjs");
+  const link = { closest: selector => (selector === "a[href]" ? {} : null) };
+  const text = { closest: () => null };
+  assert.equal(shouldCloseMenu({ type: "click", target: link }), true);
+  assert.equal(shouldCloseMenu({ type: "click", target: text }), false);
+  assert.equal(shouldCloseMenu({ type: "keydown", key: "Escape" }), true);
+  assert.equal(shouldCloseMenu({ type: "keydown", key: "Enter" }), false);
 });

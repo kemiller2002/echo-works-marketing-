@@ -1,0 +1,15 @@
+{
+  "name": "echoworks-marketing-site",
+  "private": true,
+  "type": "module",
+  "description": "EchoWorks static marketing site. Runtime has no npm dependencies; these are test-only tools.",
+  "scripts": {
+    "test": "node --test tests/site.test.mjs",
+    "build": "bash build.sh",
+    "serve": "node tools/serve.mjs",
+    "ui:conformance": "bash build.sh && playwright test --config=playwright.config.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1"
+  }
+}
