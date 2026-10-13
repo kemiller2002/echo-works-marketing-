@@ -141,7 +141,10 @@ export const evaluateActionOutcome = ({ ruleId, action, outcome, pre, post, cont
 // Browser adapters (Forma API, observation only)
 // ---------------------------------------------------------------------------
 
-const semantic = (page, { role, name }) => page.getByRole(role, { name, exact: typeof name === "string" });
+// A target may carry an optional `scope` Locator (local extension) when the
+// same accessible name legitimately appears in several landmarks, e.g. a
+// header and a footer link both named "Features".
+const semantic = (page, { role, name, scope }) => (scope ?? page).getByRole(role, { name, exact: typeof name === "string" });
 const normalizeText = value => (value ?? "").replace(/\s+/g, " ").trim();
 
 export const settleFontsAndFrames = page =>
@@ -267,6 +270,8 @@ export const measureOverflow = async page => {
     for (let text = walker.nextNode(); text; text = walker.nextNode()) {
       const element = text.parentElement;
       if (!text.textContent.trim() || !element.checkVisibility()) continue;
+      const own = element.getBoundingClientRect();
+      if (own.width <= 1 && own.height <= 1) continue; // visually hidden (sr-only / unfocused skip link)
       const range = document.createRange();
       range.selectNodeContents(text);
       const clip = clippingAncestor(element)?.getBoundingClientRect();
@@ -283,6 +288,17 @@ export const expectNoOverflow = async page => {
   const report = await measureOverflow(page);
   expect(report.status, `${report.ruleId} ${report.status}: ${report.reason}\n${report.escapes.join("\n")}`).toBe(STATUS.PASS);
   return report;
+};
+
+// ULI-L05: scale the browser's default text size (what a user's font-size
+// setting changes), so rem/em sizes and em-based media queries respond as they
+// would for that user. Chromium only (CDP Page.setFontSizes).
+export const scaleDefaultText = async (page, factor) => {
+  const session = await page.context().newCDPSession(page);
+  await session.send("Page.setFontSizes", { fontSizes: { standard: Math.round(16 * factor), fixed: Math.round(13 * factor) } });
+  await expect.poll(() => page.evaluate(() => parseFloat(getComputedStyle(document.documentElement).fontSize)),
+    { message: "default text size did not change" }).toBeGreaterThan(16 * factor - 1);
+  await settleFontsAndFrames(page);
 };
 
 // ULI-L06: a label is intact when its content fits its own box and the box is

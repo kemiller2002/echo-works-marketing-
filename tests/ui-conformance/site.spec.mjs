@@ -7,6 +7,7 @@ import {
   expectNoOverflow,
   expectPeerAlignment,
   recordTabSequence,
+  scaleDefaultText,
   settleFontsAndFrames,
   wasFocusedDuringSequence
 } from "./ui-conformance-helpers.mjs";
@@ -81,7 +82,14 @@ for (const width of WIDTHS) {
       await expectHeroBarClearOfActions(page);
     });
 
-    test("ULI-L05: 200% text scale keeps text inside its containers", async ({ page }) => {
+    test("ULI-L05: 200% browser default text size keeps text inside its containers", async ({ page }) => {
+      await open(page, width);
+      await scaleDefaultText(page, 2);
+      await expectNoOverflow(page);
+      await expectHeroBarClearOfActions(page);
+    });
+
+    test("ULI-L05: 200% root font-size override keeps text inside its containers", async ({ page }) => {
       await open(page, width);
       await page.addStyleTag({ content: "html { font-size: 200% !important; }" });
       await expectNoOverflow(page);
